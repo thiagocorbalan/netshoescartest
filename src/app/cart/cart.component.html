@@ -1,3 +1,17 @@
-<p>
-  cart works!
-</p>
+<aside class="cart-container">
+  <h2>Sacola</h2>
+
+  <ul>
+    <ng-template ngFor let-item [ngForOf]="service.cartStorage.list" let-i="index">
+
+
+
+      <li>{{ item.product.title }} | qtd: {{ item.amount }} <button class="btn btn-danger" (click)="remove(item)" >x</button></li>
+    </ng-template>
+  </ul>
+
+  <p>Subtotal - {{ service.cartStorage.subtotal | currencyBRL}}</p>
+  <p>ou em até {{ service.cartStorage.installments }}x de {{ service.cartStorage.installmentsValue | currencyBRL }}</p>
+
+  <button (click)="buy()">Comprar</button>
+</aside>

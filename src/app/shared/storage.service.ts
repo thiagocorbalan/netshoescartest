@@ -1,3 +1,5 @@
+import { CartStorageModel } from './../cart/cart-storage.model';
+import { CartModel } from './../cart/cart.model';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -5,13 +7,13 @@ import { Injectable } from '@angular/core';
 })
 export class StorageService {
 
-  get(key) {
+  get(key: string) {
     const data = localStorage.getItem(key);
-    return JSON.parse(atob(data));
+    return data ? JSON.parse(atob(data)) : null;
   }
 
-  set(key, value) {
-    const dataValue = btoa(JSON.stringify(value));
-    localStorage.setItem(key, dataValue);
+  save(key: string, data: CartStorageModel) {
+    const dataParse = btoa(JSON.stringify(data));
+    localStorage.setItem(key, dataParse);
   }
 }

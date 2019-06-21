@@ -1,1 +1,14 @@
-<router-outlet></router-outlet>
+
+
+<div class="container">
+  <div class="row">
+    <ng-template ngFor let-product [ngForOf]="products" let-i="index">
+      <div class="col-sm-4">
+        <app-product [data]="product"></app-product>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+
+<app-cart></app-cart>
