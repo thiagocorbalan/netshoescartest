@@ -1,5 +1,5 @@
 import { StorageService } from './../shared/storage.service';
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable, EventEmitter, ɵConsole } from '@angular/core';
 import { ProductModel } from '../product/product.model';
 import { CartModel } from './cart.model';
 import { CartEnum } from './cart.enum';
@@ -13,7 +13,7 @@ export class CartService {
   private KEYNAME_STORAGE = 'shop_cart';
 
   cartItems: CartModel;
-  cartStorage: CartStorageModel;
+  storage: CartStorageModel;
   update: EventEmitter<number>;
 
 
@@ -22,64 +22,103 @@ export class CartService {
     this.cartItems = new CartModel();
 
     const storageData = this.storageService.get(this.KEYNAME_STORAGE);
-    this.cartStorage = storageData ? storageData : {
+    this.storage = storageData ? storageData : {
       list: new Array(),
       subtotal: 0,
       installments: 0,
       installmentsValue: 0
     } as CartStorageModel;
+
+    console.log(this.storage.subtotal);
   }
 
-  public addCart(productItem: ProductModel) {
-    const index = this.cartStorage.list.findIndex(item => item.product.id === productItem.id);
+  /**
+   * Add Product to Cart
+   * @param product
+   */
+  public add(product: ProductModel) {
+    const indexProductCart = this.hasProductCart(product);
+    let cartItem: CartModel;
 
-    let product: CartModel = null;
-
-    if (index < 0) {
-      product = new CartModel();
-      product.product = productItem;
-      product.amount = 1;
-      this.cartStorage.list.push(product);
+    if (indexProductCart >= 0) {
+      cartItem = this.storage.list[indexProductCart];
+      cartItem.amount++;
     } else {
-      this.cartStorage.list[index].amount++;
+      cartItem = new CartModel();
+      cartItem.product = product;
+      cartItem.amount = 1;
+      this.storage.list.push(cartItem);
     }
 
-    this.cartStorage.subtotal += productItem.price;
-
+    const price = Math.round(product.price * 100) / 100;
+    this.storage.subtotal = this.storage.subtotal + price;
     this.updateCartStorage();
   }
 
-  public removeCart(id: number) {
-    this.cartStorage.list = this.cartStorage.list.filter(item => item.product.id !== id);
+  /**
+   * Remove product to Cart
+   * @param product
+   */
+  public remove(product: ProductModel) {
+
+    const indexProductCart = this.hasProductCart(product);
+    const cartItem = this.storage.list[indexProductCart]
+
+    if (cartItem.amount === 1) {
+      this.storage.list = this.storage.list.filter(item => item.product.id !== cartItem.product.id);
+    }
+
+    if (cartItem.amount > 1) {
+      cartItem.amount--;
+    }
+    const price = Math.round(product.price * 100) / 100;
+    this.storage.subtotal = this.storage.subtotal - price;
     this.updateCartStorage();
   }
 
-  public updateCartStorage() {
+  private hasProductCart(product: ProductModel): number {
+
+    const index = this.storage.list.findIndex(item => item.product.id === product.id);
+
+    return index;
+  }
+
+  private updateCartStorage() {
     this.calcInstallments();
-    this.storageService.save(this.KEYNAME_STORAGE, this.cartStorage);
-    this.update.emit(this.cartStorage.subtotal);
+
+    this.storage.subtotal = this.storage.subtotal >= 1 ? this.storage.subtotal : 0;
+
+    this.storageService.save(this.KEYNAME_STORAGE, this.storage);
+    this.update.emit(this.storage.subtotal);
   }
 
   private calcInstallments() {
-    const subtotal = this.cartStorage.subtotal;
+    const subtotal = this.storage.subtotal;
 
     let inst = 0;
-    if (subtotal > 0 && subtotal < 50) {
+    if (subtotal > 50 && subtotal < 100) {
       inst = 3;
-    } else if (subtotal >= 50 && subtotal < 120) {
+    }
+    if (subtotal >= 100 && subtotal < 120) {
       inst = 4;
-    } else if ( subtotal >= 120 && subtotal < 135) {
+    }
+    if (subtotal >= 120 && subtotal < 135) {
       inst = 5;
-    } else if ( subtotal >= 135 && subtotal < 200) {
+    }
+    if (subtotal >= 135 && subtotal < 200) {
       inst = 7;
-    } else if ( subtotal >= 200 && subtotal < 230) {
+    }
+    if (subtotal >= 200 && subtotal < 349) {
       inst = 9;
-    } else if (subtotal >= 230 ) {
+    }
+    if (subtotal >= 349) {
       inst = 12;
     }
 
-    this.cartStorage.installments = inst;
-    this.cartStorage.installmentsValue = this.cartStorage.subtotal / inst;
+    this.storage.installments = inst;
+    if (inst > 0) {
+      this.storage.installmentsValue = this.storage.subtotal / inst;
+    }
 
   }
 

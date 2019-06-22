@@ -11,6 +11,6 @@ export class CurrencyFormatPipe implements PipeTransform {
       return '';
     }
     return new Intl.NumberFormat('pt-BR', {
-      style: 'currency', currency: currencyCode }).format(value);
+      style: 'currency', currency: currencyCode,  maximumFractionDigits: 2 }).format(value);
   }
 }
