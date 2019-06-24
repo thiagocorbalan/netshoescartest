@@ -1,24 +1,22 @@
-import { CartModel } from './cart.model';
-import { ProductModel } from './../product/product.model';
-import { CartService } from './cart.service';
 import { Component, OnInit } from '@angular/core';
-import { CartEnum } from './cart.enum';
+import { CartModel } from './cart.model';
+import { CartService } from './cart.service';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
-  styleUrls: ['./cart.component.scss']
+  styleUrls: ['./cart.component.scss'],
+  preserveWhitespaces: true
 })
-export class CartComponent implements OnInit {
+export class CartComponent {
   installments: number;
+  removeItem: number;
 
   constructor(private service: CartService) {
   }
 
-  ngOnInit() {
-  }
-
   remove(cartItem: CartModel) {
+    this.removeItem = null;
     this.service.remove(cartItem.product);
   }
 }

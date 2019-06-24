@@ -1,5 +1,46 @@
-<aside class="cart-container w-25">
-  <h2>Sacola <span class="badge badge-pill badge-warning position-absolute" style="font-size: 12px;" >{{service.storage.list.length}}</span> </h2>
+<div class="float-cart">
+  <div class="float-cart__close-btn"></div>
+  <div class="float-cart__content">
+    <div class="float-cart__header">
+      <span class="badge badge-pill badge-warning"><span
+          class="badge__quantity">{{service.storage.list.length}}</span></span>
+      <span class="header-title">Sacola</span>
+    </div>
+
+    <div class="float-cart__shelf-container">
+      <ng-template [ngIf]="service.storage.list.length > 0">
+        <ng-template ngFor let-item [ngForOf]="service.storage.list" let-i="index">
+          <div class="shelf-item" [class.shelf-item--mouseover]="removeItem == i">
+            <div class="shelf-item__del" (click)="remove(item)" (mouseover)="removeItem = i" (mouseout)="removeItem = null">X</div>
+            <div class="shelf-item__thumb"><img [attr.src]="'./../../assets/images/' + item.product.sku+'.jpg'" [attr.alt]="item.product.title"></div>
+            <div class="shelf-item__details">
+              <div class="title">{{ item.product.title }} {{ item.product.description }}</div>
+              <div class="desc">{{ item.product.availableSizes }} | {{ item.product.style }}<br>Quantity:
+                {{ item.amount }}</div>
+            </div>
+            <div class="shelf-item__price"><span>{{ item.amount * item.product.price | currencyBRL  }}</span></div>
+          </div>
+        </ng-template>
+      </ng-template>
+
+      <ng-template [ngIf]="service.storage.list.length === 0">
+        <div>Seu carrinho está vazio</div>
+      </ng-template>
+
+
+
+    </div>
+    <div class="float-cart__footer">
+      <div class="sub">SUBTOTAL</div>
+      <div class="sub-price">
+        <div class="sub-price__val">{{ service.storage.subtotal | currencyBRL}}</div>
+        <div><small class="sub-price__installment">ou em até {{ service.storage.installments }}x de
+            {{ service.storage.installmentsValue | currencyBRL }}</small></div>
+      </div>
+      <button class="btn btn-dark btn-buy">Checkout</button>
+    </div>
+  </div>
+  <!-- <h2>Sacola <span class="badge badge-pill badge-warning position-absolute" style="font-size: 12px;" >{{service.storage.list.length}}</span> </h2>
 
   <ng-template [ngIf]="service.storage.list.length > 0">
 
@@ -23,8 +64,8 @@
 
   <ng-template [ngIf]="service.storage.list.length === 0">
     <p>Vazia :(</p>
-  </ng-template>
+  </ng-template> -->
 
 
 
-</aside>
+</div>

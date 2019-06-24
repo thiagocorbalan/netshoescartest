@@ -1,9 +1,16 @@
 const productsModel = require('./../models/ProductsModel');
 
 module.exports = {
+  /**
+   * Get All Products
+   * @param {*} req
+   * @param {*} res
+   */
   async index(req, res) {
     await productsModel.getAllProducts()
-    .then(products => res.json(products))
+    .then(products => {
+      res.json(products)
+    })
     .catch(err => {
         if (err.status) {
             res.status(err.status).json({ message: err.message })
@@ -13,6 +20,11 @@ module.exports = {
     })
   },
 
+  /**
+   * Gets specific product
+   * @param {*} req
+   * @param {*} res
+   */
   async detail(req, res){
     const id = req.params.id;
 

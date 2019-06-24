@@ -1,11 +1,14 @@
 const path = require("path");
 const helper = require('../helpers/Helper.js');
+const fs = require('fs');
 
-const filename = path.resolve(__dirname, "..", "..", "public", "data", "products.json");
-let data = require(filename);
-
+const rawdata = path.resolve(__dirname, "../../public/data/products.json");
+const data = JSON.parse(fs.readFileSync(rawdata, 'utf8'));
 module.exports = {
 
+  /**
+   * Get All Products
+   */
   getAllProducts() {
     return new Promise((resolve, reject) => {
       if (data.products.length === 0) {
@@ -18,6 +21,9 @@ module.exports = {
     })
   },
 
+  /**
+   *Gets specific product
+   */
   getProduct(id) {
     return new Promise((resolve, reject) => {
       helper.mustBeInArray(data.products, id)
