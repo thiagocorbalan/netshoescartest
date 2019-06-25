@@ -1,9 +1,11 @@
-<div class="float-cart">
-  <div class="float-cart__close-btn"></div>
+<div class="float-cart" [class.float-cart--opened]="floatCartOpened">
+  <div class="float-cart__open-close-button" (click)="toggleOpened()">
+    <span class="bag"><span class="bag__quantity">{{service.storage.list.length}}</span></span>
+    <div class="close"></div>
+  </div>
   <div class="float-cart__content">
     <div class="float-cart__header">
-      <span class="badge badge-pill badge-warning"><span
-          class="badge__quantity">{{service.storage.list.length}}</span></span>
+      <span class="bag"><span class="bag__quantity">{{service.storage.list.length}}</span></span>
       <span class="header-title">Sacola</span>
     </div>
 
@@ -11,61 +13,43 @@
       <ng-template [ngIf]="service.storage.list.length > 0">
         <ng-template ngFor let-item [ngForOf]="service.storage.list" let-i="index">
           <div class="shelf-item" [class.shelf-item--mouseover]="removeItem == i">
-            <div class="shelf-item__del" (click)="remove(item)" (mouseover)="removeItem = i" (mouseout)="removeItem = null">X</div>
-            <div class="shelf-item__thumb"><img [attr.src]="'./../../assets/images/' + item.product.sku+'.jpg'" [attr.alt]="item.product.title"></div>
+
+            <div class="shelf-item__thumb">
+              <div class="thumb-container">
+                <img [attr.src]="'./../../assets/images/' + item.product.sku+'.jpg'" [attr.alt]="item.product.title">
+              </div>
+            </div>
             <div class="shelf-item__details">
               <div class="title">{{ item.product.title }} {{ item.product.description }}</div>
-              <div class="desc">{{ item.product.availableSizes }} | {{ item.product.style }}<br>Quantity:
+              <div class="desc">{{ item.product.availableSizes }} | {{ item.product.style }}<br>Quantidade:
                 {{ item.amount }}</div>
             </div>
-            <div class="shelf-item__price"><span>{{ item.amount * item.product.price | currencyBRL  }}</span></div>
+            <div class="shelf-item__price">
+              <button type="button" class="close shelf-item__del" aria-label="Close" (click)="remove(item)"
+                (mouseover)="removeItem = i" (mouseout)="removeItem = null"><span
+                  aria-hidden="true">&times;</span></button>
+              <div [innerHTML]="item.amount * item.product.price | currencyBRL"></div>
+            </div>
           </div>
         </ng-template>
       </ng-template>
 
       <ng-template [ngIf]="service.storage.list.length === 0">
-        <div>Seu carrinho está vazio</div>
+        <div class="cart-empty">Seu carrinho está vazio :(</div>
       </ng-template>
 
 
 
     </div>
-    <div class="float-cart__footer">
+    <div *ngIf="service.storage.subtotal > 0" class="float-cart__footer">
       <div class="sub">SUBTOTAL</div>
       <div class="sub-price">
-        <div class="sub-price__val">{{ service.storage.subtotal | currencyBRL}}</div>
-        <div><small class="sub-price__installment">ou em até {{ service.storage.installments }}x de
-            {{ service.storage.installmentsValue | currencyBRL }}</small></div>
+        <div class="sub-price__val" [innerHTML]="service.storage.subtotal | currencyBRL"></div>
+        <div *ngIf="service.storage.installments > 0"><small class="sub-price__installment">ou em até
+            {{ service.storage.installments }}x de
+            <span [innerHTML]="service.storage.installmentsValue | currencyBRL"></span></small></div>
       </div>
-      <button class="btn btn-dark btn-buy">Checkout</button>
+      <button class="btn btn-dark btn-buy">Comprar</button>
     </div>
   </div>
-  <!-- <h2>Sacola <span class="badge badge-pill badge-warning position-absolute" style="font-size: 12px;" >{{service.storage.list.length}}</span> </h2>
-
-  <ng-template [ngIf]="service.storage.list.length > 0">
-
-    <ul class="list-unstyled">
-      <ng-template ngFor let-item [ngForOf]="service.storage.list" let-i="index">
-        <li class="mb-3">
-          <div class="title">{{ item.product.title }} {{ item.product.description }}</div>
-          <div class="">{{ item.product.availableSizes }} | {{ item.product.style }}</div>
-          <div>Quantidade: {{ item.amount }} </div>
-          <div class="price">{{ item.amount * item.product.price | currencyBRL  }}</div>
-
-            <button class="btn btn-danger" (click)="remove(item)" >x</button>
-        </li>
-      </ng-template>
-    </ul>
-
-    <p>Subtotal - {{ service.storage.subtotal | currencyBRL}}</p>
-    <p *ngIf="service.storage.installments > 0">ou em até {{ service.storage.installments }}x de {{ service.storage.installmentsValue | currencyBRL }}</p>
-    <button type="button" class="btn btn-dark d-block w-100">Comprar</button>
-  </ng-template>
-
-  <ng-template [ngIf]="service.storage.list.length === 0">
-    <p>Vazia :(</p>
-  </ng-template> -->
-
-
-
 </div>

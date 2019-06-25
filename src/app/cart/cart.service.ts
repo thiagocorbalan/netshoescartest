@@ -28,8 +28,6 @@ export class CartService {
       installments: 0,
       installmentsValue: 0
     } as CartStorageModel;
-
-    console.log(this.storage.subtotal);
   }
 
   /**
@@ -62,7 +60,7 @@ export class CartService {
   public remove(product: ProductModel) {
 
     const indexProductCart = this.hasProductCart(product);
-    const cartItem = this.storage.list[indexProductCart]
+    const cartItem = this.storage.list[indexProductCart];
 
     if (cartItem.amount === 1) {
       this.storage.list = this.storage.list.filter(item => item.product.id !== cartItem.product.id);
@@ -118,6 +116,8 @@ export class CartService {
     this.storage.installments = inst;
     if (inst > 0) {
       this.storage.installmentsValue = this.storage.subtotal / inst;
+    }else{
+      this.storage.installmentsValue = 0;
     }
 
   }

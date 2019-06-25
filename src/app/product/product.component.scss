@@ -1,0 +1,92 @@
+/**
+*   PRODUCT COMPONENT
+*
+*   @project:       Netshoes test
+*   @version:       0.0.1
+*   @description:   Style Product Component
+*   @author:        Thiago Corbalan
+*   @date:          24/06/2019
+*   @update:        ---
+*/
+
+@import "./../../assets/scss/variables";
+@import "./../../assets/scss/mixins";
+
+.app-product{
+  border: 1px solid transparent;
+  @include border-radius(2px);
+  padding: 1em;
+
+  &:hover{
+    border-color: $color-gray-light;
+
+    .app-product__content{
+      .btn-add-cart{
+        @include opacity(1);
+      }
+    }
+  }
+
+  &__content{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    color: map-get($theme-colors, 'netshoes-gray-light');
+
+    .app-product-image{
+      height: 230px;
+      width: auto;
+      margin-bottom: em(15px);
+    }
+
+    .app-product-title{
+      font-size: em(14px);
+      text-align: center;
+      letter-spacing: -0.025em;
+    }
+
+    .app-product-price{
+      font-size: em(12px);
+
+      &:before{
+        content: "";
+        width: 15px;
+        height: 2px;
+        display: block;
+        margin: 0 auto;
+        background: map-get($theme-colors , 'netshoes-yellow' );
+
+      }
+
+      span.price-value{
+         font-size: 2em;
+         font-weight: bold;
+      }
+    }
+
+    .app-product-installments{
+      font-size: em(14px);
+      color: $color-gray;
+      span{ font-weight: 600;}
+    }
+
+    .btn-add-cart{
+      display: block;
+      background: $color-black;
+      margin: em(16px);
+      font-size: em(12px);
+      color: $color-white;
+      font-weight: 600;
+      width: 60%;
+      @include opacity(0);
+      @include transition(all .2s ease-in-out);
+
+      &:hover{
+        background: map-get($theme-colors, 'netshoes-yellow');
+        color: $color-black;
+
+      }
+    }
+  }
+}

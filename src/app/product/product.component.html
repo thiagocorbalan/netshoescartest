@@ -1,9 +1,13 @@
-<div *ngIf="data" class="card mb-4">
-    <div class="card-body">
-      <img [attr.src]="'./../../assets/images/'+data.sku+'.jpg'" alt="" width="100%">
-      <h2 class="card-title">{{ data.title }} - {{ data.description }}</h2>
-      <div class="card-text">{{ data.price | currencyBRL }}</div>
-      <p *ngIf="data.installments > 0" class="card-text"><small class="text-muted">ou {{ data.installments }}x {{ installmentValue | currencyBRL }}</small></p>
-      <button (click)="addCart()" class="btn btn-primary">Adicionar ao Carrinho</button>
-    </div>
+<div *ngIf="data" class="app-product">
+  <div class="app-product__content">
+    <img [attr.src]="'./../../assets/images/'+ data.sku +'.jpg'" [attr.alt]="data.title" width="100%"
+      class="app-product-image">
+
+    <h2 class="app-product-title">{{ data.title }}<br />{{ data.description }}</h2>
+    <div class="app-product-price" [innerHTML]="data.price | currencyBRL"></div>
+    <div class="app-product-installments" *ngIf="data.installments > 0">
+      ou {{ data.installments }}x <span [innerHTML]="installmentValue | currencyBRL"></span></div>
+
+    <button (click)="addCart()" class="btn btn-add-cart">Adicionar a Sacola</button>
   </div>
+</div>

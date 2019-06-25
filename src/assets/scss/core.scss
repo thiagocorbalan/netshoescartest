@@ -1,0 +1,25 @@
+/**
+*   CORE
+*
+*   @project:       Netshoes test
+*   @version:       0.0.1
+*   @description:   Core style file
+*   @author:        Thiago Corbalan
+*   @date:          24/06/2019
+*   @update:        ---
+*/
+
+@import "~bootstrap/scss/bootstrap";
+
+@import "./path";
+
+@import "./variables";
+
+@import "./mixins";
+
+@import "./fonts";
+
+
+@import "./global";
+
+

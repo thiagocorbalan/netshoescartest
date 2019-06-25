@@ -1,0 +1,15 @@
+/*  Path
+*
+*  @project:       Netshoes test
+*  @version:       0.0.1
+*  @description:   Global Variables used to relative path images and css fonts.
+*  @author:        Thiago Corbalan
+*  @date:          24/06/2019
+*  @update:        ---
+*/
+
+
+$path-root: "./assets/";
+$path-img: "#{$path-root}images/";
+$path-font: "#{$path-root}fonts/";
+$path-icons: "#{$path-root}icons/";

@@ -1,0 +1,18 @@
+/**
+*   Fonts
+*
+*   @project:       Netshoes test
+*   @version:       0.0.1
+*   @description:   Core style file
+*   @author:        Thiago Corbalan
+*   @date:          24/06/2019
+*   @update:        ---
+*/
+
+@import "./path";
+
+@include font-face("Open Sans", "open-sans-regular");
+// @include font-face("Open Sans", "open-sans-italic",$font-style: italic );
+// @include font-face("Open Sans", "open-sans-bold", $font-weight:700);
+// @include font-face("Open Sans", "open-sans-semibold", $font-weight:600);
+// @include font-face("Open Sans", "open-sans-semibold-italic", $font-weight:600, $font-style: italic);

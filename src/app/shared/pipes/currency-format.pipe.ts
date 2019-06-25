@@ -10,7 +10,20 @@ export class CurrencyFormatPipe implements PipeTransform {
     if (!value) {
       return '';
     }
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency', currency: currencyCode,  maximumFractionDigits: 2 }).format(value);
+    let currencyFormated = null;
+    const regex = /\w\d+(?=,)/;
+
+
+    currencyFormated = new Intl.NumberFormat('pt-BR', {
+      style: 'currency', currency: currencyCode, maximumFractionDigits: 2
+    }).format(value);
+
+    const price = currencyFormated.match(regex)[0];
+    currencyFormated = currencyFormated.replace(regex, '{0}');
+
+    currencyFormated = currencyFormated.replace('{0}', `<span class='price-value'>${price}</span>`);
+
+
+    return currencyFormated;
   }
 }

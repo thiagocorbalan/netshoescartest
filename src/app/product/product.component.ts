@@ -1,20 +1,19 @@
+
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { CartService } from './../cart/cart.service';
-import { Component, OnInit, Input } from '@angular/core';
 import { ProductModel } from './product.model';
-import { CartModel } from '../cart/cart.model';
 
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
-  styleUrls: ['./product.component.scss']
+  styleUrls: ['./product.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ProductComponent implements OnInit {
 
   @Input() data: ProductModel;
   installmentValue: number;
   constructor(private cartService: CartService) {
-
-
   }
 
   ngOnInit() {
