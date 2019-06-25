@@ -27,7 +27,7 @@ export class CartComponent {
     this.service.remove(cartItem.product);
   }
 
-  toggleOpened(){
+  toggleOpened() {
     this.floatCartOpened = !this.floatCartOpened;
   }
 }
